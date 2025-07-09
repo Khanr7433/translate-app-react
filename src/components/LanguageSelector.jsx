@@ -103,7 +103,6 @@ const LanguageSelector = ({
   return (
     <div className="mb-12" ref={dropdownRef}>
       <div className="flex items-center justify-center gap-8 p-8 bg-white rounded-3xl border border-gray-200 shadow-lg lg:p-10 mx-auto max-w-5xl">
-        {/* From Language Section */}
         <div className="flex flex-col gap-4 flex-1 min-w-0">
           <span className="text-sm text-gray-500 font-bold uppercase tracking-wide text-center">
             From
@@ -196,7 +195,6 @@ const LanguageSelector = ({
           </div>
         </div>
 
-        {/* Swap Button */}
         <div className="flex items-center justify-center mx-6 flex-shrink-0">
           <button
             className="bg-google-blue hover:bg-google-blue-hover border-none rounded-full w-16 h-16 flex items-center justify-center text-white transition-all hover:scale-110 shadow-xl"
@@ -215,7 +213,6 @@ const LanguageSelector = ({
           </button>
         </div>
 
-        {/* To Language Section */}
         <div className="flex flex-col gap-4 flex-1 min-w-0">
           <span className="text-sm text-gray-500 font-bold uppercase tracking-wide text-center">
             To

@@ -43,9 +43,7 @@ const TranslationResult = ({
     if (translatedText) {
       try {
         await navigator.clipboard.writeText(translatedText);
-        // You could add a toast notification here
       } catch (err) {
-        // Fallback for older browsers
         const textArea = document.createElement("textarea");
         textArea.value = translatedText;
         document.body.appendChild(textArea);

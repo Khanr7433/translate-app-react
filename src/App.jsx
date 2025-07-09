@@ -55,7 +55,6 @@ function App() {
   };
 
   const swapLanguages = () => {
-    // This is for the main swap button in the translation box
     handleSwapLanguages();
   };
 
@@ -77,7 +76,6 @@ function App() {
       return newHistory;
     });
 
-    // Save to localStorage
     const newHistory = [entry, ...history];
     if (newHistory.length > 10) {
       newHistory.pop();
@@ -97,7 +95,6 @@ function App() {
   };
 
   const speakTranslation = (text) => {
-    console.log("speakTranslation called with text:", text);
     speakText(text);
   };
 
@@ -106,26 +103,17 @@ function App() {
   };
 
   const speakText = (text) => {
-    console.log("speakText called with text:", text);
     if (!text) {
-      console.log("No text provided to speakText");
       return;
     }
 
     if ("speechSynthesis" in window) {
-      console.log("Speech synthesis is supported");
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.8;
       utterance.pitch = 1;
 
-      utterance.onstart = () => console.log("Speech started");
-      utterance.onend = () => console.log("Speech ended");
-      utterance.onerror = (e) => console.error("Speech error:", e);
-
       speechSynthesis.speak(utterance);
-      console.log("speechSynthesis.speak() called");
     } else {
-      console.log("Speech synthesis not supported");
       alert("Speech synthesis not supported in this browser");
     }
   };
@@ -197,7 +185,6 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-center">
           <div className="logo">
@@ -208,10 +195,8 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-12">
-          {/* Language Selector Bar */}
           <div className="flex justify-center px-4">
             <div className="w-full max-w-4xl">
               <LanguageSelector
@@ -224,10 +209,8 @@ function App() {
             </div>
           </div>
 
-          {/* Translation Cards */}
           <div className="flex justify-center px-4">
             <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] overflow-hidden border border-gray-100">
-              {/* Input Side */}
               <div className="min-h-[360px]">
                 <div className="bg-gray-50 px-8 py-5 border-b border-gray-200">
                   <span className="text-sm font-semibold text-gray-600 flex items-center gap-2">
@@ -243,7 +226,6 @@ function App() {
                 />
               </div>
 
-              {/* Divider */}
               <div className="w-20 bg-gray-50 relative items-center justify-center flex-shrink-0 hidden lg:flex border-l border-r border-gray-200">
                 <button
                   className="bg-google-blue hover:bg-google-blue-hover border-none rounded-full w-16 h-16 flex items-center justify-center text-white transition-all hover:scale-110 shadow-lg z-10"
@@ -262,7 +244,6 @@ function App() {
                 </button>
               </div>
 
-              {/* Mobile Divider */}
               <div className="w-full h-20 bg-gray-50 relative flex items-center justify-center lg:hidden border-t border-b border-gray-200">
                 <button
                   className="bg-google-blue hover:bg-google-blue-hover border-none rounded-full w-16 h-16 flex items-center justify-center text-white transition-all hover:scale-110 shadow-lg"
@@ -287,7 +268,6 @@ function App() {
                 </button>
               </div>
 
-              {/* Output Side */}
               <div className="min-h-[360px]">
                 <TranslationResult
                   originalText={currentOriginalText}
@@ -299,7 +279,6 @@ function App() {
             </div>
           </div>
 
-          {/* Translation History */}
           <div className="flex justify-center px-4">
             <div className="w-full max-w-6xl">
               <TranslationHistory

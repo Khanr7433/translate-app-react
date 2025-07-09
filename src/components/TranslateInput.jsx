@@ -22,7 +22,6 @@ const TranslateInput = ({ loading, error, onTranslate, onClear }) => {
   };
 
   const handleInput = () => {
-    // Auto-resize textarea
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = "auto";
