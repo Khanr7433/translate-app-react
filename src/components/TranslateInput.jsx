@@ -34,7 +34,7 @@ const TranslateInput = ({ loading, error, onTranslate, onClear }) => {
   }, [inputText]);
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full flex flex-col bg-gray-900">
       <div className="relative h-full flex flex-col">
         <textarea
           ref={textareaRef}
@@ -44,16 +44,16 @@ const TranslateInput = ({ loading, error, onTranslate, onClear }) => {
           onInput={handleInput}
           disabled={loading}
           placeholder="Enter text to translate..."
-          className="w-full min-h-[200px] max-h-[240px] p-8 border-none outline-none font-inherit text-lg leading-7 resize-none bg-transparent text-gray-800 flex-1 placeholder-gray-400 disabled:bg-gray-50 disabled:cursor-not-allowed disabled:text-gray-500"
+          className="w-full min-h-[200px] max-h-[280px] lg:max-h-[340px] p-8 border-none outline-none font-medium text-lg leading-7 resize-none bg-transparent text-white flex-1 placeholder-gray-400 disabled:bg-gray-800/50 disabled:cursor-not-allowed disabled:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 custom-scrollbar"
           maxLength={5000}
         />
 
-        <div className="flex justify-between items-center px-8 py-6 border-t border-gray-200 bg-gray-50">
+        <div className="flex justify-between items-center px-8 py-4 lg:py-5 border-t border-gray-700/50 bg-gradient-to-r from-gray-800/50 to-gray-800/50 backdrop-blur-sm sticky bottom-0 z-10">
           <div className="flex items-center gap-4">
             {inputText && (
               <button
                 onClick={clear}
-                className="bg-transparent border-none text-gray-400 cursor-pointer p-3 rounded-xl transition-all hover:bg-gray-200 hover:text-gray-600"
+                className="bg-gray-800/50 border border-gray-700/50 text-gray-300 cursor-pointer p-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:text-white backdrop-blur-sm"
                 title="Clear text"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -71,7 +71,7 @@ const TranslateInput = ({ loading, error, onTranslate, onClear }) => {
 
           <div className="flex items-center gap-4">
             {inputText && (
-              <div className="text-sm text-gray-500 px-4 py-2 bg-gray-100 rounded-full font-medium">
+              <div className="text-sm text-gray-300 px-4 py-2 bg-gray-800/50 border border-gray-700/50 rounded-full font-medium backdrop-blur-sm">
                 {inputText.length}/5000
               </div>
             )}
@@ -79,7 +79,7 @@ const TranslateInput = ({ loading, error, onTranslate, onClear }) => {
             <button
               onClick={translate}
               disabled={loading || !inputText.trim()}
-              className="bg-google-blue border-none text-white px-8 py-4 rounded-2xl cursor-pointer text-base font-bold flex items-center gap-3 transition-all hover:bg-google-blue-hover hover:shadow-xl disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 border border-blue-500/30 text-white px-6 py-3 rounded-lg cursor-pointer text-base font-semibold flex items-center gap-3 transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-lg hover:scale-105 disabled:from-gray-800 disabled:to-gray-800 disabled:border-gray-700/50 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:scale-100 backdrop-blur-sm shadow-md"
               title="Translate"
             >
               {loading ? (
@@ -99,7 +99,7 @@ const TranslateInput = ({ loading, error, onTranslate, onClear }) => {
       </div>
 
       {error && (
-        <div className="flex items-center gap-3 bg-red-50 text-red-600 p-4 text-sm border-t border-red-200 rounded-b-xl">
+        <div className="flex items-center gap-3 bg-red-900/30 text-red-300 p-4 text-sm border-t border-red-600/30 rounded-b-lg backdrop-blur-sm">
           <svg
             width="20"
             height="20"

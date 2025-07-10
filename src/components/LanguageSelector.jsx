@@ -1,5 +1,27 @@
-import { useState, useEffect, useRef } from "react";
-import { getSupportedLanguages } from "../services/translationService";
+import { useState } from "react";
+
+const languages = [
+  { code: "auto", name: "Auto-detect" },
+  { code: "en", name: "English" },
+  { code: "es", name: "Spanish" },
+  { code: "fr", name: "French" },
+  { code: "de", name: "German" },
+  { code: "it", name: "Italian" },
+  { code: "pt", name: "Portuguese" },
+  { code: "ru", name: "Russian" },
+  { code: "ja", name: "Japanese" },
+  { code: "ko", name: "Korean" },
+  { code: "zh", name: "Chinese" },
+  { code: "ar", name: "Arabic" },
+  { code: "hi", name: "Hindi" },
+  { code: "th", name: "Thai" },
+  { code: "vi", name: "Vietnamese" },
+  { code: "nl", name: "Dutch" },
+  { code: "sv", name: "Swedish" },
+  { code: "da", name: "Danish" },
+  { code: "no", name: "Norwegian" },
+  { code: "fi", name: "Finnish" },
+];
 
 const LanguageSelector = ({
   fromLanguage,
@@ -10,297 +32,130 @@ const LanguageSelector = ({
 }) => {
   const [fromDropdownOpen, setFromDropdownOpen] = useState(false);
   const [toDropdownOpen, setToDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const popularLanguages = [
-    { code: "en", name: "English", flag: "🇺🇸" },
-    { code: "hi", name: "Hindi", flag: "🇮🇳" },
-    { code: "fr", name: "French", flag: "🇫🇷" },
-    { code: "es", name: "Spanish", flag: "🇪🇸" },
-    { code: "de", name: "German", flag: "🇩🇪" },
-    { code: "it", name: "Italian", flag: "🇮🇹" },
-    { code: "pt", name: "Portuguese", flag: "🇵🇹" },
-    { code: "ru", name: "Russian", flag: "🇷🇺" },
-    { code: "ja", name: "Japanese", flag: "🇯🇵" },
-    { code: "ko", name: "Korean", flag: "🇰🇷" },
-    { code: "zh", name: "Chinese", flag: "🇨🇳" },
-  ];
-
-  const allLanguages = getSupportedLanguages();
-
-  const languageFlags = {
-    en: "🇺🇸",
-    hi: "🇮🇳",
-    fr: "🇫🇷",
-    es: "🇪🇸",
-    de: "🇩🇪",
-    it: "🇮🇹",
-    pt: "🇵🇹",
-    ru: "🇷🇺",
-    ja: "🇯🇵",
-    ko: "🇰🇷",
-    zh: "🇨🇳",
-    ar: "🇸🇦",
-    tr: "🇹🇷",
-    nl: "🇳🇱",
-    sv: "🇸🇪",
-    da: "🇩🇰",
-    no: "🇳🇴",
-    pl: "🇵🇱",
-    cs: "🇨🇿",
-    sk: "🇸🇰",
-    hu: "🇭🇺",
-  };
 
   const getLanguageName = (code) => {
-    return allLanguages[code] || "Unknown";
+    const lang = languages.find((l) => l.code === code);
+    return lang ? lang.name : code;
   };
 
-  const getLanguageFlag = (code) => {
-    return languageFlags[code] || "🏳️";
-  };
-
-  const selectFromLanguage = (languageCode) => {
-    onFromLanguageChange(languageCode);
+  const handleFromLanguageSelect = (langCode) => {
+    onFromLanguageChange(langCode);
     setFromDropdownOpen(false);
   };
 
-  const selectToLanguage = (languageCode) => {
-    onToLanguageChange(languageCode);
+  const handleToLanguageSelect = (langCode) => {
+    onToLanguageChange(langCode);
     setToDropdownOpen(false);
   };
 
-  const toggleFromDropdown = () => {
-    setFromDropdownOpen(!fromDropdownOpen);
-    setToDropdownOpen(false);
-  };
-
-  const toggleToDropdown = () => {
-    setToDropdownOpen(!toDropdownOpen);
-    setFromDropdownOpen(false);
-  };
-
-  const swapLanguages = () => {
-    onSwapLanguages();
-    setFromDropdownOpen(false);
-    setToDropdownOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setFromDropdownOpen(false);
-        setToDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  const availableToLanguages = languages.filter((lang) => lang.code !== "auto");
 
   return (
-    <div className="mb-12" ref={dropdownRef}>
-      <div className="flex items-center justify-center gap-8 p-8 bg-white rounded-3xl border border-gray-200 shadow-lg lg:p-10 mx-auto max-w-5xl">
-        <div className="flex flex-col gap-4 flex-1 min-w-0">
-          <span className="text-sm text-gray-500 font-bold uppercase tracking-wide text-center">
-            From
-          </span>
-          <div className="relative">
-            <div className={`relative ${fromDropdownOpen ? "z-50" : ""}`}>
-              <button
-                className={`flex items-center gap-4 px-6 py-4 border-2 rounded-2xl transition-all w-full min-w-[160px] font-semibold text-lg ${
-                  fromLanguage
-                    ? "bg-blue-50 border-google-blue text-google-blue"
-                    : "bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300 text-gray-700"
-                }`}
-                onClick={toggleFromDropdown}
-              >
-                <span className="text-base">
-                  {getLanguageFlag(fromLanguage)}
-                </span>
-                <span className="flex-1 text-left font-normal">
-                  {getLanguageName(fromLanguage)}
-                </span>
-                <svg
-                  className={`text-google-gray transition-transform ${
-                    fromDropdownOpen ? "rotate-180" : ""
-                  }`}
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-
-              {fromDropdownOpen && (
-                <div className="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-2xl shadow-2xl z-50 max-h-96 overflow-y-auto mt-3">
-                  <div className="py-3">
-                    <div className="px-6 py-4 text-xs text-gray-500 font-bold uppercase tracking-wide border-b border-gray-100">
-                      Popular languages
-                    </div>
-                    <div className="flex flex-col">
-                      {popularLanguages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => selectFromLanguage(lang.code)}
-                          className={`flex items-center gap-4 px-6 py-4 text-left transition-colors ${
-                            fromLanguage === lang.code
-                              ? "bg-blue-50 text-google-blue font-semibold"
-                              : "hover:bg-gray-50 text-gray-700"
-                          }`}
-                        >
-                          <span className="text-base">{lang.flag}</span>
-                          <span>{lang.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-100 py-2">
-                    <div className="px-4 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">
-                      All languages
-                    </div>
-                    <div className="flex flex-col">
-                      {Object.entries(allLanguages).map(([code, name]) => (
-                        <button
-                          key={code}
-                          onClick={() => selectFromLanguage(code)}
-                          className={`flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                            fromLanguage === code
-                              ? "bg-blue-50 text-google-blue font-medium"
-                              : "hover:bg-gray-50 text-gray-700"
-                          }`}
-                        >
-                          <span className="text-base">
-                            {getLanguageFlag(code)}
-                          </span>
-                          <span>{name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center mx-6 flex-shrink-0">
+    <div className="w-full bg-gray-900/80 backdrop-blur-xl rounded-lg shadow-lg border border-gray-700/50 p-2 sm:p-4 lg:p-6 relative z-[200]">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="relative flex-1 w-full sm:max-w-sm">
           <button
-            className="bg-google-blue hover:bg-google-blue-hover border-none rounded-full w-16 h-16 flex items-center justify-center text-white transition-all hover:scale-110 shadow-xl"
-            onClick={swapLanguages}
-            title="Swap languages"
+            onClick={() => setFromDropdownOpen(!fromDropdownOpen)}
+            className="flex items-center justify-between w-full px-10 py-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400/50"
           >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <span className="truncate">{getLanguageName(fromLanguage)}</span>
+            <svg
+              className={`w-5 h-5 ml-2 transition-transform duration-200 ${
+                fromDropdownOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
-                d="M16 3L21 8L16 13M21 8H3M8 21L3 16L8 11M3 16H21"
-                stroke="currentColor"
-                strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {fromDropdownOpen && (
+            <div className="absolute top-full left-0 right-0 mt-3 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-10 max-h-64 overflow-y-auto custom-scrollbar">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => handleFromLanguageSelect(lang.code)}
+                  className={`w-full px-10 py-5 text-left text-gray-200 hover:bg-blue-600/20 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                    fromLanguage === lang.code
+                      ? "bg-blue-600/30 text-blue-300 font-semibold"
+                      : ""
+                  }`}
+                >
+                  {lang.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex-shrink-0 mx-3">
+          <button
+            onClick={onSwapLanguages}
+            className="group relative p-5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
+          >
+            <svg
+              className="w-6 h-6 text-white transform group-hover:rotate-180 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m0-4l4-4"
               />
             </svg>
           </button>
         </div>
 
-        <div className="flex flex-col gap-4 flex-1 min-w-0">
-          <span className="text-sm text-gray-500 font-bold uppercase tracking-wide text-center">
-            To
-          </span>
-          <div className="relative">
-            <div className={`relative ${toDropdownOpen ? "z-50" : ""}`}>
-              <button
-                className={`flex items-center gap-4 px-6 py-4 border-2 rounded-2xl transition-all w-full min-w-[160px] font-semibold text-lg ${
-                  toLanguage
-                    ? "bg-blue-50 border-google-blue text-google-blue"
-                    : "bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300 text-gray-700"
-                }`}
-                onClick={toggleToDropdown}
-              >
-                <span className="text-base">{getLanguageFlag(toLanguage)}</span>
-                <span className="flex-1 text-left font-normal">
-                  {getLanguageName(toLanguage)}
-                </span>
-                <svg
-                  className={`text-google-gray transition-transform ${
-                    toDropdownOpen ? "rotate-180" : ""
+        <div className="relative flex-1 w-full sm:max-w-sm">
+          <button
+            onClick={() => setToDropdownOpen(!toDropdownOpen)}
+            className="flex items-center justify-between w-full px-10 py-6 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400/50"
+          >
+            <span className="truncate">{getLanguageName(toLanguage)}</span>
+            <svg
+              className={`w-5 h-5 ml-2 transition-transform duration-200 ${
+                toDropdownOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {toDropdownOpen && (
+            <div className="absolute top-full left-0 right-0 mt-3 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-10 max-h-64 overflow-y-auto custom-scrollbar">
+              {availableToLanguages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => handleToLanguageSelect(lang.code)}
+                  className={`w-full px-10 py-5 text-left text-gray-200 hover:bg-green-600/20 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                    toLanguage === lang.code
+                      ? "bg-green-600/30 text-green-300 font-semibold"
+                      : ""
                   }`}
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
                 >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-
-              {toDropdownOpen && (
-                <div className="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl shadow-xl z-50 max-h-96 overflow-y-auto mt-2">
-                  <div className="py-2">
-                    <div className="px-4 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide border-b border-gray-100">
-                      Popular languages
-                    </div>
-                    <div className="flex flex-col">
-                      {popularLanguages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => selectToLanguage(lang.code)}
-                          className={`flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                            toLanguage === lang.code
-                              ? "bg-blue-50 text-google-blue font-medium"
-                              : "hover:bg-gray-50 text-gray-700"
-                          }`}
-                        >
-                          <span className="text-base">{lang.flag}</span>
-                          <span>{lang.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-100 py-2">
-                    <div className="px-4 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">
-                      All languages
-                    </div>
-                    <div className="flex flex-col">
-                      {Object.entries(allLanguages).map(([code, name]) => (
-                        <button
-                          key={code}
-                          onClick={() => selectToLanguage(code)}
-                          className={`flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                            toLanguage === code
-                              ? "bg-blue-50 text-google-blue font-medium"
-                              : "hover:bg-gray-50 text-gray-700"
-                          }`}
-                        >
-                          <span className="text-base">
-                            {getLanguageFlag(code)}
-                          </span>
-                          <span>{name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+                  {lang.name}
+                </button>
+              ))}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

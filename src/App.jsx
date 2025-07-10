@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import LanguageSelector from "./components/LanguageSelector";
-import TranslateInput from "./components/TranslateInput";
-import TranslationResult from "./components/TranslationResult";
-import TranslationHistory from "./components/TranslationHistory";
+import {
+  LanguageSelector,
+  TranslationHistory,
+  TranslationResult,
+  TranslateInput,
+} from "../src/components";
 import { translateText } from "./services/translationService";
 
 function App() {
   const [currentOriginalText, setCurrentOriginalText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
   const [history, setHistory] = useState([]);
-  const [fromLanguage, setFromLanguage] = useState("en"); // Default to English
-  const [toLanguage, setToLanguage] = useState("hi"); // Default to Hindi
+  const [fromLanguage, setFromLanguage] = useState("en");
+  const [toLanguage, setToLanguage] = useState("hi");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -184,21 +186,32 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-center">
-          <div className="logo">
-            <h1 className="text-3xl font-semibold text-google-blue">
-              🌐 Translate
+    <div className="flex flex-col items-center justify-center">
+      <header className="w-full shadow-lg ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-center">
+          <div className="flex items-center space-x-3">
+            <span className="text-4xl">🌐</span>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+              Translate App
             </h1>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="flex justify-center px-4">
-            <div className="w-full max-w-4xl">
+      <main className="flex-1 w-full  text-gray-200 py-4 lg:py-8">
+        <div className="max-w-7xl mx-auto space-y-4 lg:space-y-8">
+          <div className="text-center mb-4 lg:mb-8">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
+              Translate Any Language
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+              Simple and fast translation between languages. Connect with people
+              around the world.
+            </p>
+          </div>
+
+          <div className="flex justify-center items-baseline-last px-4">
+            <div className="w-full max-w-5xl">
               <LanguageSelector
                 fromLanguage={fromLanguage}
                 toLanguage={toLanguage}
@@ -210,82 +223,108 @@ function App() {
           </div>
 
           <div className="flex justify-center px-4">
-            <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] overflow-hidden border border-gray-100">
-              <div className="min-h-[360px]">
-                <div className="bg-gray-50 px-8 py-5 border-b border-gray-200">
-                  <span className="text-sm font-semibold text-gray-600 flex items-center gap-2">
-                    {getLanguageFlag(fromLanguage)}{" "}
-                    {getLanguageName(fromLanguage)}
-                  </span>
-                </div>
-                <TranslateInput
-                  loading={isLoading}
-                  error={errorMessage}
-                  onTranslate={handleTranslate}
-                  onClear={clearTranslation}
-                />
-              </div>
-
-              <div className="w-20 bg-gray-50 relative items-center justify-center flex-shrink-0 hidden lg:flex border-l border-r border-gray-200">
-                <button
-                  className="bg-google-blue hover:bg-google-blue-hover border-none rounded-full w-16 h-16 flex items-center justify-center text-white transition-all hover:scale-110 shadow-lg z-10"
-                  onClick={swapLanguages}
-                  title="Swap languages"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M16 3L21 8L16 13M21 8H3M8 21L3 16L8 11M3 16H21"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="w-full h-20 bg-gray-50 relative flex items-center justify-center lg:hidden border-t border-b border-gray-200">
-                <button
-                  className="bg-google-blue hover:bg-google-blue-hover border-none rounded-full w-16 h-16 flex items-center justify-center text-white transition-all hover:scale-110 shadow-lg"
-                  onClick={swapLanguages}
-                  title="Swap languages"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="rotate-90"
-                  >
-                    <path
-                      d="M16 3L21 8L16 13M21 8H3M8 21L3 16L8 11M3 16H21"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="min-h-[360px]">
-                <TranslationResult
-                  originalText={currentOriginalText}
-                  translatedText={translatedText}
-                  targetLanguage={toLanguage}
-                  onSpeak={speakTranslation}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-center px-4">
             <div className="w-full max-w-6xl">
-              <TranslationHistory
-                history={history}
-                onClearHistory={clearHistory}
-                onSpeakItem={speakHistoryItem}
-              />
+              <div className="bg-gray-900/90 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-700/50 overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] min-h-[400px] lg:min-h-[500px]">
+                  <div className="relative">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                    <div className="bg-gradient-to-r from-gray-800 to-gray-800 px-6 sm:px-8 py-4 sm:py-5 border-b border-gray-700/50">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm sm:text-base font-semibold text-gray-200 flex items-center gap-2">
+                          {getLanguageFlag(fromLanguage)}{" "}
+                          {getLanguageName(fromLanguage)}
+                        </span>
+                        <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
+                    <TranslateInput
+                      loading={isLoading}
+                      error={errorMessage}
+                      onTranslate={handleTranslate}
+                      onClear={clearTranslation}
+                    />
+                  </div>
+
+                  <div className="w-20 bg-gradient-to-b from-gray-800 to-gray-800 relative items-center justify-center flex-shrink-0 hidden lg:flex border-l border-r border-gray-700/50">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
+                      <button
+                        className="group bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border-none rounded-lg w-16 h-16 flex items-center justify-center text-white transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                        onClick={swapLanguages}
+                        title="Swap languages"
+                      >
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="group-hover:rotate-180 transition-transform duration-200"
+                        >
+                          <path
+                            d="M16 3L21 8L16 13M21 8H3M8 21L3 16L8 11M3 16H21"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="w-full h-20 bg-gradient-to-r from-gray-800 to-gray-800 relative flex items-center justify-center lg:hidden border-t border-b border-gray-700/50 mt-15">
+                    <button
+                      className="group bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 border-none rounded-lg w-16 h-16 flex items-center justify-center text-white transition-all duration-200 hover:scale-105 shadow-lg z-0"
+                      onClick={swapLanguages}
+                      title="Swap languages"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="rotate-90 group-hover:rotate-180 transition-transform duration-200"
+                      >
+                        <path
+                          d="M16 3L21 8L16 13M21 8H3M8 21L3 16L8 11M3 16H21"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className="relative min-h-[400px] lg:min-h-[500px]">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-green-600"></div>
+                    <div className="bg-gradient-to-r from-gray-800 to-gray-800 px-6 sm:px-8 py-4 sm:py-5 border-b border-gray-700/50">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm sm:text-base font-semibold text-gray-200 flex items-center gap-2">
+                          {getLanguageFlag(toLanguage)}{" "}
+                          {getLanguageName(toLanguage)}
+                        </span>
+                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
+                    <TranslationResult
+                      originalText={currentOriginalText}
+                      translatedText={translatedText}
+                      targetLanguage={toLanguage}
+                      onSpeak={speakTranslation}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center px-4 mb-5">
+                <div className="w-full max-w-6xl">
+                  <TranslationHistory
+                    history={history}
+                    onClearHistory={clearHistory}
+                    onSpeakItem={speakHistoryItem}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

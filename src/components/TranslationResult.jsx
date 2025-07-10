@@ -55,16 +55,16 @@ const TranslationResult = ({
   };
 
   return (
-    <div className="relative h-full flex flex-col">
-      <div className="bg-gray-50 px-8 py-5 border-b border-gray-200">
-        <span className="text-sm font-semibold text-gray-600 flex items-center gap-2">
+    <div className="relative h-full flex flex-col bg-gray-900">
+      <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm px-8 py-5 border-b border-gray-700/50">
+        <span className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           {getLanguageFlag(targetLanguage)} {getLanguageName(targetLanguage)}
         </span>
       </div>
 
       <div className="flex-1 flex flex-col relative">
         {translatedText ? (
-          <div className="p-8 text-lg leading-7 text-gray-800 break-words flex-1 min-h-[200px] font-semibold">
+          <div className="p-8 text-lg leading-7 text-white break-words flex-1 min-h-[200px] font-medium custom-scrollbar">
             {translatedText}
           </div>
         ) : (
@@ -77,10 +77,10 @@ const TranslationResult = ({
         )}
 
         {translatedText && (
-          <div className="flex items-center gap-4 px-8 py-6 border-t border-gray-200 bg-gray-50">
+          <div className="flex items-center gap-4 px-8 py-6 border-t border-gray-700/50 bg-gradient-to-r from-gray-800/50 to-gray-800/50 backdrop-blur-sm">
             <button
               onClick={copyToClipboard}
-              className="bg-transparent border-none text-gray-400 cursor-pointer p-3 rounded-xl flex items-center justify-center transition-all hover:bg-gray-200 hover:text-gray-600"
+              className="bg-gray-800/50 border border-gray-700/50 text-gray-300 cursor-pointer p-3 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-700/50 hover:text-white backdrop-blur-sm"
               title="Copy translation"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -104,7 +104,7 @@ const TranslationResult = ({
 
             <button
               onClick={() => onSpeak(translatedText)}
-              className="bg-transparent border-none text-gray-400 cursor-pointer p-3 rounded-xl flex items-center justify-center transition-all hover:bg-gray-200 hover:text-gray-600"
+              className="bg-gray-800/50 border border-gray-700/50 text-gray-300 cursor-pointer p-3 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-700/50 hover:text-white backdrop-blur-sm"
               title="Listen"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
