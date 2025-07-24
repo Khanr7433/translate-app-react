@@ -1,8 +1,12 @@
+import React from "react";
+import toast from "react-hot-toast";
+
 const TranslationResult = ({ translatedText, onSpeak }) => {
   const copyToClipboard = async () => {
     if (translatedText) {
       try {
         await navigator.clipboard.writeText(translatedText);
+        toast.success("Translation copied to clipboard!");
       } catch {
         const textArea = document.createElement("textarea");
         textArea.value = translatedText;
@@ -10,6 +14,7 @@ const TranslationResult = ({ translatedText, onSpeak }) => {
         textArea.select();
         document.execCommand("copy");
         document.body.removeChild(textArea);
+        toast.success("Translation copied to clipboard!");
       }
     }
   };
