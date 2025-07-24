@@ -1,49 +1,9 @@
-import { getSupportedLanguages } from "../services/translationService";
-
-const TranslationResult = ({
-  originalText,
-  translatedText,
-  targetLanguage,
-  onSpeak,
-}) => {
-  const languageFlags = {
-    en: "🇺🇸",
-    hi: "🇮🇳",
-    fr: "🇫🇷",
-    es: "🇪🇸",
-    de: "🇩🇪",
-    it: "🇮🇹",
-    pt: "🇵🇹",
-    ru: "🇷🇺",
-    ja: "🇯🇵",
-    ko: "🇰🇷",
-    zh: "🇨🇳",
-    ar: "🇸🇦",
-    tr: "🇹🇷",
-    nl: "🇳🇱",
-    sv: "🇸🇪",
-    da: "🇩🇰",
-    no: "🇳🇴",
-    pl: "🇵🇱",
-    cs: "🇨🇿",
-    sk: "🇸🇰",
-    hu: "🇭🇺",
-  };
-
-  const getLanguageName = (code) => {
-    const languages = getSupportedLanguages();
-    return languages[code] || "Unknown";
-  };
-
-  const getLanguageFlag = (code) => {
-    return languageFlags[code] || "🏳️";
-  };
-
+const TranslationResult = ({ translatedText, onSpeak }) => {
   const copyToClipboard = async () => {
     if (translatedText) {
       try {
         await navigator.clipboard.writeText(translatedText);
-      } catch (err) {
+      } catch {
         const textArea = document.createElement("textarea");
         textArea.value = translatedText;
         document.body.appendChild(textArea);
@@ -56,12 +16,6 @@ const TranslationResult = ({
 
   return (
     <div className="relative h-full flex flex-col bg-gray-900">
-      <div className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm px-8 py-5 border-b border-gray-700/50">
-        <span className="text-sm font-semibold text-gray-300 flex items-center gap-2">
-          {getLanguageFlag(targetLanguage)} {getLanguageName(targetLanguage)}
-        </span>
-      </div>
-
       <div className="flex-1 flex flex-col relative">
         {translatedText ? (
           <div className="p-8 text-lg leading-7 text-white break-words flex-1 min-h-[200px] font-medium custom-scrollbar">
@@ -77,7 +31,7 @@ const TranslationResult = ({
         )}
 
         {translatedText && (
-          <div className="flex items-center gap-4 px-8 py-6 border-t border-gray-700/50 bg-gradient-to-r from-gray-800/50 to-gray-800/50 backdrop-blur-sm">
+          <div className="flex items-center gap-4 px-8 py-4 border-t border-gray-700/50 bg-gradient-to-r from-gray-800/50 to-gray-800/50 backdrop-blur-sm sticky bottom-0 z-10">
             <button
               onClick={copyToClipboard}
               className="bg-gray-800/50 border border-gray-700/50 text-gray-300 cursor-pointer p-3 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-700/50 hover:text-white backdrop-blur-sm"
